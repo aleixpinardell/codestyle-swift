@@ -623,4 +623,5 @@ let colour = "red"
 
 * [The Official raywenderlich.com Swift Style Guide.](https://github.com/raywenderlich/swift-style-guide)
 * [Github Swift Style Guide](https://github.com/github/swift-style-guide/edit/master/README.md)
+* [Jérémie Girault](https://github.com/jeremiegirault)
 
