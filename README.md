@@ -2,7 +2,7 @@
 
 The overarching goals are conciseness, readability, and simplicity.
 
-## Naming
+## 1. Naming
 
 Use descriptive names with camel case for classes, methods, variables, etc. Class names should be capitalized, while method names and variables should start with a lower case letter.
 
@@ -50,7 +50,7 @@ class Guideline {
 }
 ```
 
-### Enumerations
+### 1.1 Enumerations
 
 Use UpperCamelCase for enumeration values:
 
@@ -63,7 +63,7 @@ enum Shape {
 }
 ```
 
-### Class Prefixes
+### 1.2 Class Prefixes
 
 Swift types are automatically namespaced by the module that contains them and you should not add a class prefix. If two names from different modules collide you can disambiguate by prefixing the type name with the module name.
 
@@ -74,7 +74,7 @@ let myClass = MyModule.UsefulClass()
 ```
 
 
-## Spacing
+## 2. Spacing
 
 * Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping.
 
@@ -108,16 +108,16 @@ else {
 * Don’t leave trailing whitespace.
 * Not even leading indentation on blank lines.
 
-## Comments
+## 3. Comments
 
 When they are needed, use comments to explain **why** a particular piece of code does something. Comments must be kept up-to-date or deleted.
 
 Avoid block comments inline with code, as the code should be as self-documenting as possible. *Exception: This does not apply to those comments used to generate documentation.*
 
 
-## Classes and Structures
+## 4. Classes and Structures
 
-### Which one to use?
+### 4.1 Which one to use?
 
 Remember, structs have [value semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_144). Use structs for things that do not have an identity. An array that contains [a, b, c] is really the same as another array that contains [a, b, c] and they are completely interchangeable. It doesn't matter whether you use the first array or the second, because they represent the exact same thing. That's why arrays are structs.
 
@@ -125,7 +125,7 @@ Classes have [reference semantics](https://developer.apple.com/library/mac/docum
 
 Sometimes, things should be structs but need to conform to `AnyObject` or are historically modeled as classes already (`NSDate`, `NSSet`). Try to follow these guidelines as closely as possible.
 
-### Prefer structs over classes
+### 4.2 Prefer structs over classes
 
 Unless you require functionality that can only be provided by a class (like identity or deinitializers), implement a struct instead.
 
@@ -181,13 +181,13 @@ struct Car: Vehicle {
 
 _Rationale:_ Value types are simpler, easier to reason about, and behave as expected with the `let` keyword.
 
-### Make classes `final` by default
+### 4.3 Make classes `final` by default
 
 Classes should start as `final`, and only be changed to allow subclassing if a valid need for inheritance has been identified. Even in that case, as many definitions as possible _within_ the class should be `final` as well, following the same rules.
 
 _Rationale:_ Composition is usually preferable to inheritance, and opting _in_ to inheritance hopefully means that more thought will be put into the decision.
 
-### Protocol Conformance
+### 4.4 Protocol Conformance
 
 When adding protocol conformance to a class, prefer adding a separate class extension for the protocol methods. This keeps the related methods grouped together with the protocol and can simplify instructions to add a protocol to a class with its associated methods.
 
@@ -213,7 +213,7 @@ class MyViewcontroller: UIViewController, UITableViewDataSource, UIScrollViewDel
 }
 ```
 
-### Only explicitly refer to `self` when required
+### 4.5 Only explicitly refer to `self` when required
 
 When accessing properties or methods on `self`, leave the reference to `self` implicit by default:
 
@@ -243,7 +243,7 @@ extension History {
 }
 ```
 
-### Prefer implicit getters on read-only properties and subscripts
+### 4.6 Prefer implicit getters on read-only properties and subscripts
 
 When possible, omit the `get` keyword on read-only computed properties and
 read-only subscripts.
@@ -278,7 +278,7 @@ subscript(index: Int) -> T {
 
 _Rationale:_ The intent and meaning of the first version is clear, and results in less code.
 
-### Omit type parameters where possible
+### 4.7 Omit type parameters where possible
 
 Methods of parameterized types can omit type parameters on the receiving type when they’re identical to the receiver’s. For example:
 
@@ -302,7 +302,7 @@ struct Composite<T> {
 }
 ```
 
-## Function Declarations
+## 5. Function Declarations
 
 Keep short function declarations on one line including the opening brace:
 
@@ -323,7 +323,7 @@ func reticulateSplines(spline: [Double],
 }
 ```
 
-### Avoid functions that have a span greater than the height of your screen
+### 5.1 Avoid functions that have a span greater than the height of your screen
 
 If your function is bigger, split it in smaller functions
 
@@ -339,7 +339,7 @@ if let unwrappedSubview = optionalSubview {
 }
 ```
 
-## Closure Expressions
+## 6. Closure Expressions
 
 Use trailing closure syntax only if there's a single closure expression parameter at the end of the argument list. Give the closure parameters descriptive names.
 
@@ -382,7 +382,7 @@ attendeeList.sort { a, b in
 ```
 
 
-## Types
+## 7. Types
 
 Always use Swift's native types when available. Swift offers bridging to Objective-C so you can still use the full set of methods as needed.
 
@@ -400,7 +400,28 @@ let widthString: NSString = width.stringValue        // NSString
 
 In Sprite Kit code, use `CGFloat` if it makes the code more succinct by avoiding too many conversions.
 
-### Prefer `let`-bindings over `var`-bindings wherever possible
+### 7.1 Type Inference
+
+Prefer compact code and let the compiler infer the type for a constant or variable, unless you need a specific type other than the default such as `CGFloat` or `Int16`.
+
+**Preferred:**
+```swift
+let message = "Click the button"
+let currentBounds = computeViewBounds()
+var names = [String]()
+let maximumWidth: CGFloat = 106.5
+```
+
+**Not Preferred:**
+```swift
+let message: String = "Click the button"
+let currentBounds: CGRect = computeViewBounds()
+var names: [String] = []
+```
+
+**NOTE**: Following this guideline means picking descriptive names is even more important than before.
+
+## 8. Prefer `let`-bindings over `var`-bindings wherever possible
 
 Use `let foo = …` over `var foo = …` wherever possible (and when in doubt). Only use `var` if you absolutely have to (i.e. you *know* that the value might change, e.g. when using the `weak` storage modifier).
 
@@ -412,9 +433,9 @@ It becomes easier to reason about code. Had you used `var` while still making th
 
 Accordingly, whenever you see a `var` identifier being used, assume that it will change and ask yourself why.
 
-### Optionals
+## 9. Optionals
 
-#### Avoid Using Force-Unwrapping of Optionals
+### 9.1 Avoid Using Force-Unwrapping of Optionals
 
 If you have an identifier `foo` of type `FooType?` or `FooType!`, don't force-unwrap it to get to the underlying value (`foo!`) if possible.
 
@@ -437,13 +458,13 @@ foo?.callSomethingIfFooIsNotNil()
 
 _Rationale:_ Explicit `if let`-binding of optionals results in safer code. Force unwrapping is more prone to lead to runtime crashes.
 
-#### Avoid Using Implicitly Unwrapped Optionals
+### 9.2 Avoid Using Implicitly Unwrapped Optionals
 
 Where possible, use `let foo: FooType?` instead of `let foo: FooType!` if `foo` may be nil (Note that in general, `?` can be used instead of `!`).
 
 _Rationale:_ Explicit optionals result in safer code. Implicitly unwrapped optionals have the potential of crashing at runtime.
 
-### Avoid imbrication of `if-let`
+### 9.3 Avoid imbrication of `if-let`
 
 When naming optional variables and properties, avoid naming them like `optionalString` or `maybeView` since their optional-ness is already in the type declaration.
 
@@ -460,7 +481,7 @@ if let subview = subview, volume = volume {
 }
 ```
 
-### Use guard whenever possible instead of if when it linearize your code
+## 10. Use guard whenever possible instead of if when it linearize your code
 
 **Prefered**
 ```
@@ -477,7 +498,7 @@ if let value = opt {
 }
 ```
 
-### Struct Initializers
+## 11. Struct Initializers
 
 Use the native Swift struct initializers rather than the legacy CGGeometry constructors.
 
@@ -495,29 +516,7 @@ let centerPoint = CGPointMake(96, 42)
 
 Prefer the struct-scope constants `CGRect.infiniteRect`, `CGRect.nullRect`, etc. over global constants `CGRectInfinite`, `CGRectNull`, etc. For existing variables, you can use the shorter `.zeroRect`.
 
-### Type Inference
-
-Prefer compact code and let the compiler infer the type for a constant or variable, unless you need a specific type other than the default such as `CGFloat` or `Int16`.
-
-**Preferred:**
-```swift
-let message = "Click the button"
-let currentBounds = computeViewBounds()
-var names = [String]()
-let maximumWidth: CGFloat = 106.5
-```
-
-**Not Preferred:**
-```swift
-let message: String = "Click the button"
-let currentBounds: CGRect = computeViewBounds()
-var names: [String] = []
-```
-
-**NOTE**: Following this guideline means picking descriptive names is even more important than before.
-
-
-### Syntactic Sugar
+## 12. Syntactic Sugar
 
 Prefer the shortcut versions of type declarations over the full generics syntax.
 
@@ -536,7 +535,7 @@ var faxNumber: Optional<Int>
 ```
 
 
-## Control Flow
+## 13. Control Flow
 
 Prefer the `for-in` style of `for` loop over the `for-condition-increment` style.
 
@@ -564,7 +563,7 @@ for var i = 0; i < attendeeList.count; i++ {
 ```
 
 
-## Semicolons
+## 14. Semicolons
 
 Swift does not require a semicolon after each statement in your code. They are only required if you wish to combine multiple statements on a single line.
 
@@ -584,7 +583,7 @@ let swift = "not a scripting language";
 
 **NOTE**: Swift is very different to JavaScript, where omitting semicolons is [generally considered unsafe](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)
 
-## Always specify access control explicitly for top-level definitions
+## 15. Always specify access control explicitly for top-level definitions
 
 Top-level functions, types, and variables should always have explicit access control specifiers:
 
@@ -604,7 +603,7 @@ internal struct TheFez {
 
 _Rationale:_ It's rarely appropriate for top-level definitions to be specifically `internal`, and being explicit ensures that careful thought goes into that decision. Within a definition, reusing the same access control specifier is just duplicative, and the default is usually reasonable.
 
-## Language
+## 16. Language
 
 Use US English spelling to match Apple's API.
 
