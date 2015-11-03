@@ -583,7 +583,11 @@ let swift = "not a scripting language";
 
 **NOTE**: Swift is very different to JavaScript, where omitting semicolons is [generally considered unsafe](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)
 
-## 15. Always specify access control explicitly for top-level definitions
+## 15. Access control
+
+- Use private by default, internal when needed and public with precaution
+
+### 15.1 Always specify access control explicitly for top-level definitions
 
 Top-level functions, types, and variables should always have explicit access control specifiers:
 
@@ -602,6 +606,26 @@ internal struct TheFez {
 ```
 
 _Rationale:_ It's rarely appropriate for top-level definitions to be specifically `internal`, and being explicit ensures that careful thought goes into that decision. Within a definition, reusing the same access control specifier is just duplicative, and the default is usually reasonable.
+
+### 15.2 Always specify access control extention at the method level
+
+**Preferred:**
+```swift
+private extension Optional {
+    var isEmpty: Bool {
+        return self == nil
+    }
+}
+```
+
+**Not Preferred:**
+```swift
+extension Optional {
+    private var isEmpty: Bool {
+        return self == nil
+    }
+}
+```
 
 ## 16. Language
 
