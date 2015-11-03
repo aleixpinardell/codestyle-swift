@@ -607,12 +607,12 @@ internal struct TheFez {
 
 _Rationale:_ It's rarely appropriate for top-level definitions to be specifically `internal`, and being explicit ensures that careful thought goes into that decision. Within a definition, reusing the same access control specifier is just duplicative, and the default is usually reasonable.
 
-### 15.2 Always specify access control extention at the method level
+### 15.2 Always specify access control extension at the method level
 
 **Preferred:**
 ```swift
-private extension Optional {
-    var isEmpty: Bool {
+extension Optional {
+    private var isEmpty: Bool {
         return self == nil
     }
 }
@@ -620,8 +620,8 @@ private extension Optional {
 
 **Not Preferred:**
 ```swift
-extension Optional {
-    private var isEmpty: Bool {
+private extension Optional {
+    var isEmpty: Bool {
         return self == nil
     }
 }
