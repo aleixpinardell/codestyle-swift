@@ -4,7 +4,9 @@ The overarching goals are conciseness, readability, and simplicity.
 
 ## 1. Naming
 
-Use descriptive names with camel case for classes, methods, variables, etc. Class names should be capitalized, while method names and variables should start with a lower case letter.
+Use descriptive names with camel case for classes, methods, variables, etc.
+- **Class, struct and enum** names should start with a **upper case** letter
+- **Method and variables** names should start with a **lower case** letter
 
 **Preferred:**
 
@@ -32,8 +34,8 @@ For functions and init methods, prefer named parameters for all arguments unless
 
 ```swift
 func dateFromString(dateString: String) -> NSDate
-func convertPointAt(#column: Int, #row: Int) -> CGPoint
-func timedAction(#delay: NSTimeInterval, perform action: SKAction) -> SKAction!
+func convertPointAt(column column: Int, row: Int) -> CGPoint
+func timedAction(delay delay: NSTimeInterval, perform action: SKAction) -> SKAction!
 
 // would be called like this:
 dateFromString("2014-03-14")
@@ -68,6 +70,7 @@ enum Shape {
 Swift types are automatically namespaced by the module that contains them and you should not add a class prefix. If two names from different modules collide you can disambiguate by prefixing the type name with the module name.
 
 ```swift
+// Both MyModule and SomeModule contain UsefulClass
 import SomeModule
 
 let myClass = MyModule.UsefulClass()
@@ -101,12 +104,11 @@ else {
 }
 ```
 
-* There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
-
+* There should be exactly one blank line between methods to aid in visual clarity and organization. New line within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
 * End files with a newline.
 * Make liberal use of vertical whitespace to divide code into logical chunks.
-* Don’t leave trailing whitespace.
-* Not even leading indentation on blank lines.
+* Don’t leave trailing whitespace. (Except on blank lines to keep the indentation level)
+* Trust Xcode default re-indentation
 
 ## 3. Comments
 
@@ -201,14 +203,14 @@ extension MyViewcontroller: UITableViewDataSource {
     // table view data source methods
 }
 
-extension MyViewcontroller: UIScrollViewDelegate {
-    // scroll view delegate methods
+extension MyViewcontroller: UITableViewDelegate {
+    // table view delegate methods
 } 
 ```
 
 **Not Preferred:**
 ```swift
-class MyViewcontroller: UIViewController, UITableViewDataSource, UIScrollViewDelegate {
+class MyViewcontroller: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // all methods
 }
 ```
@@ -235,9 +237,9 @@ extension History {
 		self.events = events
 	}
 
-	var whenVictorious: () -> () {
-		return {
-			self.rewrite()
+	func reload() {
+		APIService.getEvents { events in
+			self.events = events
 		}
 	}
 }
@@ -326,18 +328,6 @@ func reticulateSplines(spline: [Double],
 ### 5.1 Avoid functions that have a span greater than the height of your screen
 
 If your function is bigger, split it in smaller functions
-
-**Not Preferred:**
-```swift
-var optionalSubview: UIView?
-var volume: Double?
-
-if let unwrappedSubview = optionalSubview {
-    if let realVolume = volume {
-       // do something with unwrappedSubview and realVolume
-    }
-}
-```
 
 ## 6. Closure Expressions
 
