@@ -204,7 +204,7 @@ extension MyViewcontroller: UITableViewDataSource {
 }
 
 extension MyViewcontroller: UITableViewDelegate {
-    // scroll view delegate methods
+    // table view delegate methods
 } 
 ```
 
