@@ -119,17 +119,9 @@ Avoid block comments inline with code, as the code should be as self-documenting
 
 ## 4. Classes and Structures
 
-### 4.1 Which one to use?
+### 4.1 Prefer structs over classes
 
-Remember, structs have [value semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_144). Use structs for things that do not have an identity. An array that contains [a, b, c] is really the same as another array that contains [a, b, c] and they are completely interchangeable. It doesn't matter whether you use the first array or the second, because they represent the exact same thing. That's why arrays are structs.
-
-Classes have [reference semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_145). Use classes for things that do have an identity or a specific life cycle. You would model a person as a class because two person objects are two different things. Just because two people have the same name and birthdate, doesn't mean they are the same person. But the person's birthdate would be a struct because a date of 3 March 1950 is the same as any other date object for 3 March 1950. The date itself doesn't have an identity.
-
-Sometimes, things should be structs but need to conform to `AnyObject` or are historically modeled as classes already (`NSDate`, `NSSet`). Try to follow these guidelines as closely as possible.
-
-### 4.2 Prefer structs over classes
-
-Unless you require functionality that can only be provided by a class (like identity or deinitializers), implement a struct instead.
+Unless you require functionality that can only be provided by a class (like identity or deinitializers), implement a struct instead. Structs are copy-on-write, this means if you have readonly structs it does not cost anything.
 
 Note that inheritance is (by itself) usually _not_ a good reason to use classes, because polymorphism can be provided by protocols, and implementation reuse can be provided through composition.
 
@@ -183,13 +175,13 @@ struct Car: Vehicle {
 
 _Rationale:_ Value types are simpler, easier to reason about, and behave as expected with the `let` keyword.
 
-### 4.3 Make classes `final` by default
+### 4.2 Make classes `final` by default
 
 Classes should start as `final`, and only be changed to allow subclassing if a valid need for inheritance has been identified. Even in that case, as many definitions as possible _within_ the class should be `final` as well, following the same rules.
 
 _Rationale:_ Composition is usually preferable to inheritance, and opting _in_ to inheritance hopefully means that more thought will be put into the decision.
 
-### 4.4 Protocol Conformance
+### 4.3 Protocol Conformance
 
 When adding protocol conformance to a class, prefer adding a separate class extension for the protocol methods. This keeps the related methods grouped together with the protocol and can simplify instructions to add a protocol to a class with its associated methods.
 
