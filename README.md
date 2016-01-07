@@ -193,7 +193,7 @@ _Rationale:_ Composition is usually preferable to inheritance, and opting _in_ t
 
 When adding protocol conformance to a class, prefer adding a separate class extension for the protocol methods. This keeps the related methods grouped together with the protocol and can simplify instructions to add a protocol to a class with its associated methods.
 
-Also, don't forget the // MARK: - comment to keep things well-organized!
+Also, it is recommanded to add `// MARK: -` comment to keep things well-organized!
 
 **Preferred:**
 ```swift
